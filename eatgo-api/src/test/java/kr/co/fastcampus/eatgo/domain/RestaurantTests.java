@@ -8,17 +8,18 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class RestaurantTests {
-	@Test
-	public void creation() {
-		Restaurant restaurant = new Restaurant("Bob Zip", "");
-		//assertThat(restaurant.getName(), is("Bob Zip"));
-		assertThat(restaurant.getName()).isEqualTo("Bob Zip");
-	}
+    @Test
+    public void creation() {
+        Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "");
+        //assertThat(restaurant.getName(), is("Bob Zip"));
+        assertThat(restaurant.getName()).isEqualTo("Bob Zip");
+        assertThat(restaurant.getId()).isEqualTo(1004L);
+    }
 
-	@Test
-	public void information() {
-		Restaurant restaurant = new Restaurant("Bob Zip", "Seoul");
-		//assertThat(restaurant.getInformation(), is("Bob Zip in Seoul"));
-		assertThat(restaurant.getName()).isEqualTo("Bob Zip in Seoul");
-	}
+    @Test
+    public void information() {
+        Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "Seoul");
+        //assertThat(restaurant.getInformation(), is("Bob Zip in Seoul"));
+        assertThat(restaurant.getName()).isEqualTo("Bob Zip in Seoul");
+    }
 }
