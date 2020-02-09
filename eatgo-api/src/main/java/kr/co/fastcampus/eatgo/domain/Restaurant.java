@@ -22,4 +22,8 @@ public class Restaurant {
     public long getId() {
         return Id;
     }
+
+    public String getAddress() {
+        return address;
+    }
 }
