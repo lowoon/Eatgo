@@ -67,4 +67,16 @@ class RestaurantServiceTest {
 
         assertThat(menuItem.getName()).isEqualTo("Kimchi");
     }
+
+    @Test
+    void addRestaurant() {
+        Restaurant restaurant = new Restaurant("BeRyong", "Busan");
+        Restaurant saved = new Restaurant(1234L, "BeRyong", "Busan");
+
+        given(restaurantRepository.save(any())).willReturn(saved);
+
+        Restaurant created = restaurantService.addRestaurant(restaurant);
+
+        assertThat(created.getId()).isEqualTo(1234L);
+    }
 }

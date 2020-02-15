@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -64,5 +65,19 @@ class RestaurantControllerTest {
                 .andExpect(content().string(containsString("\"id\":2020")))
                 .andExpect(content().string(containsString("\"name\":\"Cyber Food\"")))
                 .andExpect(content().string(containsString("\"address\":\"Sokcho\"")));
+    }
+
+    @Test
+    public void create() throws Exception {
+        Restaurant restaurant = new Restaurant(1234L, "BeRyong", "Busan");
+
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/restaurants/1234"))
+                .andExpect(content().string("{}"));
+
+        verify(restaurantService).addRestaurant(any());
     }
 }
