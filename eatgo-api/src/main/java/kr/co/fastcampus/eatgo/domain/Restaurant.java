@@ -3,10 +3,22 @@ package kr.co.fastcampus.eatgo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+@Entity
 public class Restaurant {
+
+    @Id
+    @GeneratedValue
+    private long id;
+
     private String name;
     private String address;
-    private long id;
+
+    @Transient
     private List<MenuItem> menuItems = new ArrayList<>();
 
     public Restaurant() {}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 
+@CrossOrigin
 @RestController
 public class RestaurantController {
     @Autowired
@@ -35,7 +37,7 @@ public class RestaurantController {
             throws URISyntaxException {
         String name = resource.getName();
         String address = resource.getAddress();
-        Restaurant restaurant = new Restaurant(1234L, name, address);
+        Restaurant restaurant = new Restaurant(name, address);
         restaurantService.addRestaurant(restaurant);
 
         URI location = new URI("/restaurants/" + restaurant.getId());

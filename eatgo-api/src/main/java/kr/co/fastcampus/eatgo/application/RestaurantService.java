@@ -24,7 +24,7 @@ public class RestaurantService {
     }
 
     public Restaurant getRestaurant(Long id) {
-        return restaurantRepository.findById(id);
+        return restaurantRepository.findById(id).orElse(null);
     }
 
     public List<Restaurant> getRestaurants() {

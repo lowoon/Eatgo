@@ -11,7 +11,6 @@ class RestaurantTests {
     @Test
     public void creation() {
         Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "");
-        //assertThat(restaurant.getName(), is("Bob Zip"));
         assertThat(restaurant.getName()).isEqualTo("Bob Zip");
         assertThat(restaurant.getId()).isEqualTo(1004L);
     }
@@ -19,7 +18,6 @@ class RestaurantTests {
     @Test
     public void information() {
         Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "Seoul");
-        //assertThat(restaurant.getInformation(), is("Bob Zip in Seoul"));
-        assertThat(restaurant.getName()).isEqualTo("Bob Zip in Seoul");
+        assertThat(restaurant.getInformation()).isEqualTo("Bob Zip in Seoul");
     }
 }
