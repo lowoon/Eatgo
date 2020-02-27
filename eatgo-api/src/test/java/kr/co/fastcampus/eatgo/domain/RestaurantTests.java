@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class RestaurantTests {
+
     @Test
     public void creation() {
         Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "");

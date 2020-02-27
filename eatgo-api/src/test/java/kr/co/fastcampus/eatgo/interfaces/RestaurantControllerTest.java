@@ -24,6 +24,7 @@ import kr.co.fastcampus.eatgo.domain.Restaurant;
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class)
 class RestaurantControllerTest {
+
     @Autowired
     private MockMvc mvc;
 
@@ -79,5 +80,15 @@ class RestaurantControllerTest {
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());
+    }
+
+    @Test
+    public void update() throws Exception {
+        mvc.perform(patch("/restaurants/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Joker\",\"address\":\"Busan\"}"))
+                .andExpect(status().isOk());
+
+        verify(restaurantService).updateRestaurant(1004L, "Joker", "Busan");
     }
 }

@@ -18,6 +18,7 @@ import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 
 class RestaurantServiceTest {
+
     private RestaurantService restaurantService;
 
     @Mock
@@ -79,5 +80,17 @@ class RestaurantServiceTest {
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
         assertThat(created.getId()).isEqualTo(1234L);
+    }
+
+    @Test
+    void updateRestaurant() {
+        Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "Seoul");
+
+        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
+
+        restaurantService.updateRestaurant(1004L, "Sool Zip", "Sokcho");
+
+        assertThat(restaurant.getName()).isEqualTo("Sool Zip");
+        assertThat(restaurant.getAddress()).isEqualTo("Sokcho");
     }
 }
