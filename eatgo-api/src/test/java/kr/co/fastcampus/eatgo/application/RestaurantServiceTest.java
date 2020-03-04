@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 
 class RestaurantServiceTest {
@@ -58,10 +59,16 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void getRestaurant() {
+    void getRestaurantWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
 
         assertThat(restaurant.getId()).isEqualTo(1004L);
+    }
+
+    @Test
+    void getRestaurantWithNotExisted() {
+        assertThatThrownBy(() -> restaurantService.getRestaurant(1234L))
+                .isInstanceOf(RestaurantNotFoundException.class);
     }
 
     @Test

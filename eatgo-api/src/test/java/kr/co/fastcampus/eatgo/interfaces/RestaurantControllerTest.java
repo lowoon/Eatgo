@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class)
@@ -50,7 +51,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    public void detail() throws Exception {
+    public void detailWithExisted() throws Exception {
         Restaurant restaurant1 = Restaurant.builder()
                 .id(1004L)
                 .name("Bob Zip")
@@ -87,6 +88,16 @@ class RestaurantControllerTest {
     }
 
     @Test
+    public void detailWithNotExisted() throws Exception {
+        given(restaurantService.getRestaurant(1234L))
+                .willThrow(new RestaurantNotFoundException(1234L));
+
+        mvc.perform(get("/restaurants/1234"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
+    }
+
+    @Test
     public void createWithValidData() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
@@ -116,7 +127,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    public void updateWithValidDate() throws Exception {
+    public void updateWithValidData() throws Exception {
         mvc.perform(patch("/restaurants/1004")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Joker\",\"address\":\"Busan\"}"))
@@ -126,7 +137,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    public void updateWithInvalidDate() throws Exception {
+    public void updateWithInvalidData() throws Exception {
         mvc.perform(patch("/restaurants/1004")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"\",\"address\":\"\"}"))

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 
 @Service
@@ -26,7 +27,8 @@ public class RestaurantService {
     }
 
     public Restaurant getRestaurant(Long id) {
-        return restaurantRepository.findById(id).orElse(null);
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
     }
 
     public List<Restaurant> getRestaurants() {
