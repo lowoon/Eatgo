@@ -25,17 +25,13 @@ class RestaurantServiceTest {
     @Mock
     private RestaurantRepository restaurantRepository;
 
-    @Mock
-    private MenuItemRepository menuItemRepository;
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         mockRestaurantRepository();
 
-        restaurantService = new RestaurantService(
-                restaurantRepository, menuItemRepository);
+        restaurantService = new RestaurantService(restaurantRepository);
     }
 
     private void mockRestaurantRepository() {

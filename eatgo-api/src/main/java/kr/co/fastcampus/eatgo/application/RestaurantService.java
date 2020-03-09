@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.co.fastcampus.eatgo.domain.MenuItem;
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
@@ -18,12 +16,8 @@ public class RestaurantService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    @Autowired
-    private MenuItemRepository menuItemRepository;
-
-    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.menuItemRepository = menuItemRepository;
     }
 
     public Restaurant getRestaurant(Long id) {
@@ -33,10 +27,6 @@ public class RestaurantService {
 
     public List<Restaurant> getRestaurants() {
         return restaurantRepository.findAll();
-    }
-
-    public List<MenuItem> getMenuItems(Long id) {
-        return menuItemRepository.findAllByRestaurantId(id);
     }
 
     public Restaurant addRestaurant(Restaurant restaurant) {

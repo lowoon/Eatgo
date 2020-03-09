@@ -9,5 +9,4 @@ class EatgoApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
