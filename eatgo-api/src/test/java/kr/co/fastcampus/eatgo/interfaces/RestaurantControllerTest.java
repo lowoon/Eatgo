@@ -22,6 +22,7 @@ import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
+import kr.co.fastcampus.eatgo.domain.Review;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class)
@@ -52,7 +53,7 @@ class RestaurantControllerTest {
 
     @Test
     public void detailWithExisted() throws Exception {
-        Restaurant restaurant1 = Restaurant.builder()
+        Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
                 .name("Bob Zip")
                 .address("Seoul")
@@ -62,29 +63,25 @@ class RestaurantControllerTest {
                 .name("Kimchi")
                 .build();
 
-        restaurant1.setMenuItems(Collections.singletonList(menuItem));
-
-        Restaurant restaurant2 = Restaurant.builder()
-                .id(2020L)
-                .name("Cyber Food")
-                .address("Sokcho")
+        Review review = Review.builder()
+                .name("Joker")
+                .score(3)
+                .description("JMT")
                 .build();
 
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
-        given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
+        restaurant.setMenuItems(Collections.singletonList(menuItem));
+        restaurant.setReviews(Collections.singletonList(review));
+
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"id\":1004")))
                 .andExpect(content().string(containsString("\"name\":\"Bob Zip\"")))
                 .andExpect(content().string(containsString("\"address\":\"Seoul\"")))
-                .andExpect(content().string(containsString("Kimchi")));
-
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"id\":2020")))
-                .andExpect(content().string(containsString("\"name\":\"Cyber Food\"")))
-                .andExpect(content().string(containsString("\"address\":\"Sokcho\"")));
+                .andExpect(content().string(containsString("Kimchi")))
+                .andExpect(content().string(containsString("\"name\":\"Joker\"")))
+                .andExpect(content().string(containsString("\"score\":3")));
     }
 
     @Test

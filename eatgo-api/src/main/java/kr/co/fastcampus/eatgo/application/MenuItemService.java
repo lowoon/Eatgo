@@ -10,6 +10,7 @@ import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 
 @Service
+@Transactional
 public class MenuItemService {
 
     private MenuItemRepository menuItemRepository;
@@ -23,7 +24,6 @@ public class MenuItemService {
         return menuItemRepository.findAllByRestaurantId(id);
     }
 
-    @Transactional
     public void bulkUpdate(Long restaurantId, List<MenuItem> menuItems) {
         for (MenuItem menuItem : menuItems) {
             update(restaurantId, menuItem);
