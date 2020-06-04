@@ -4,7 +4,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,11 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import kr.co.fastcampus.eatgo.application.*;
+import kr.co.fastcampus.eatgo.application.ReviewService;
 import kr.co.fastcampus.eatgo.domain.Review;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ReviewController.class)
+@WebMvcTest(controllers = ReviewController.class)
 public class ReviewControllerTest {
 
     @Autowired
