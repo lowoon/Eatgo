@@ -42,8 +42,8 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public List<Restaurant> getRestaurants() {
-        return restaurantRepository.findAll();
+    public List<Restaurant> getRestaurants(String region, Long categoryId) {
+        return restaurantRepository.findAllByAddressContainingAndCategoryId(region, categoryId);
     }
 
     public Restaurant addRestaurant(Restaurant restaurant) {
@@ -51,7 +51,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Restaurant updateRestaurant(long id, String name, String address) {
+    public Restaurant updateRestaurant(Long id, String name, String address) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
 
         restaurant.updateInformation(name, address);

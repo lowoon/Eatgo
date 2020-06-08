@@ -10,20 +10,17 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import kr.co.fastcampus.eatgo.application.*;
+import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.domain.Review;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(RestaurantController.class)
 class RestaurantControllerTest {
 
@@ -37,36 +34,37 @@ class RestaurantControllerTest {
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(Restaurant.builder()
-                .id(1004L)
-                .name("Bob Zip")
-                .address("Seoul")
-                .build());
+            .id(1004L)
+            .categoryId(1L)
+            .name("Bob Zip")
+            .address("Seoul")
+            .build());
 
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
+        given(restaurantService.getRestaurants("Seoul", 1L)).willReturn(restaurants);
 
-        mvc.perform(get("/restaurants"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"name\":\"Bob Zip\"")))
-                .andExpect(content().string(containsString("\"id\":1004")));
+        mvc.perform(get("/restaurants?region=Seoul&category=1"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("\"name\":\"Bob Zip\"")))
+            .andExpect(content().string(containsString("\"id\":1004")));
     }
 
     @Test
     public void detailWithExisted() throws Exception {
         Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("Bob Zip")
-                .address("Seoul")
-                .build();
+            .id(1004L)
+            .name("Bob Zip")
+            .address("Seoul")
+            .build();
 
         MenuItem menuItem = MenuItem.builder()
-                .name("Kimchi")
-                .build();
+            .name("Kimchi")
+            .build();
 
         Review review = Review.builder()
-                .name("Joker")
-                .score(3)
-                .description("JMT")
-                .build();
+            .name("Joker")
+            .score(3)
+            .description("JMT")
+            .build();
 
         restaurant.setMenuItems(Collections.singletonList(menuItem));
         restaurant.setReviews(Collections.singletonList(review));
@@ -74,22 +72,22 @@ class RestaurantControllerTest {
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"id\":1004")))
-                .andExpect(content().string(containsString("\"name\":\"Bob Zip\"")))
-                .andExpect(content().string(containsString("\"address\":\"Seoul\"")))
-                .andExpect(content().string(containsString("Kimchi")))
-                .andExpect(content().string(containsString("\"name\":\"Joker\"")))
-                .andExpect(content().string(containsString("\"score\":3")));
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("\"id\":1004")))
+            .andExpect(content().string(containsString("\"name\":\"Bob Zip\"")))
+            .andExpect(content().string(containsString("\"address\":\"Seoul\"")))
+            .andExpect(content().string(containsString("Kimchi")))
+            .andExpect(content().string(containsString("\"name\":\"Joker\"")))
+            .andExpect(content().string(containsString("\"score\":3")));
     }
 
     @Test
     public void detailWithNotExisted() throws Exception {
         given(restaurantService.getRestaurant(1234L))
-                .willThrow(new RestaurantNotFoundException(1234L));
+            .willThrow(new RestaurantNotFoundException(1234L));
 
         mvc.perform(get("/restaurants/1234"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("{}"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().string("{}"));
     }
 }

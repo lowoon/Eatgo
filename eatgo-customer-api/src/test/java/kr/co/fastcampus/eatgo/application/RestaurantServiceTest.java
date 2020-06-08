@@ -41,27 +41,29 @@ class RestaurantServiceTest {
         mockMenuItemRepository();
         mockReviewRepository();
 
-        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository, reviewRepository);
+        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository,
+            reviewRepository);
     }
 
     private void mockRestaurantRepository() {
         List<Restaurant> restaurants = new ArrayList<>();
         Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("Bob Zip")
-                .address("Seoul")
-                .build();
+            .id(1004L)
+            .categoryId(1L)
+            .name("Bob Zip")
+            .address("Seoul")
+            .build();
         restaurants.add(restaurant);
 
-        given(restaurantRepository.findAll()).willReturn(restaurants);
+        given(restaurantRepository.findAllByAddressContainingAndCategoryId("Seoul", 1L)).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
     }
 
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(MenuItem.builder()
-                .name("Kimchi")
-                .build());
+            .name("Kimchi")
+            .build());
 
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
     }
@@ -69,17 +71,17 @@ class RestaurantServiceTest {
     private void mockReviewRepository() {
         List<Review> reviews = new ArrayList<>();
         reviews.add(Review.builder()
-                .name("BeRyong")
-                .score(1)
-                .description("Bad")
-                .build());
+            .name("BeRyong")
+            .score(1)
+            .description("Bad")
+            .build());
 
         given(reviewRepository.findAllByRestaurantId(1004L)).willReturn(reviews);
     }
 
     @Test
     void getRestaurants() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants();
+        List<Restaurant> restaurants = restaurantService.getRestaurants("Seoul", 1L);
 
         Restaurant restaurant = restaurants.get(0);
 
@@ -105,7 +107,7 @@ class RestaurantServiceTest {
     @Test
     void getRestaurantWithNotExisted() {
         assertThatThrownBy(() -> restaurantService.getRestaurant(1234L))
-                .isInstanceOf(RestaurantNotFoundException.class);
+            .isInstanceOf(RestaurantNotFoundException.class);
     }
 
     @Test
@@ -117,9 +119,9 @@ class RestaurantServiceTest {
         });
 
         Restaurant restaurant = Restaurant.builder()
-                .name("BeRyond")
-                .address("Busan")
-                .build();
+            .name("BeRyond")
+            .address("Busan")
+            .build();
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
@@ -129,10 +131,10 @@ class RestaurantServiceTest {
     @Test
     void updateRestaurant() {
         Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("Bob Zip")
-                .address("Seoul")
-                .build();
+            .id(1004L)
+            .name("Bob Zip")
+            .address("Seoul")
+            .build();
 
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
 

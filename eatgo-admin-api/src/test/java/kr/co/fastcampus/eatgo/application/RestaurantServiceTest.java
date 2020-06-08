@@ -35,10 +35,11 @@ class RestaurantServiceTest {
     private void mockRestaurantRepository() {
         List<Restaurant> restaurants = new ArrayList<>();
         Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("Bob Zip")
-                .address("Seoul")
-                .build();
+            .id(1004L)
+            .categoryId(1L)
+            .name("Bob Zip")
+            .address("Seoul")
+            .build();
         restaurants.add(restaurant);
 
         given(restaurantRepository.findAll()).willReturn(restaurants);
@@ -64,7 +65,7 @@ class RestaurantServiceTest {
     @Test
     void getRestaurantWithNotExisted() {
         assertThatThrownBy(() -> restaurantService.getRestaurant(1234L))
-                .isInstanceOf(RestaurantNotFoundException.class);
+            .isInstanceOf(RestaurantNotFoundException.class);
     }
 
     @Test
@@ -76,9 +77,9 @@ class RestaurantServiceTest {
         });
 
         Restaurant restaurant = Restaurant.builder()
-                .name("BeRyond")
-                .address("Busan")
-                .build();
+            .name("BeRyond")
+            .address("Busan")
+            .build();
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
@@ -88,10 +89,11 @@ class RestaurantServiceTest {
     @Test
     void updateRestaurant() {
         Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("Bob Zip")
-                .address("Seoul")
-                .build();
+            .id(1004L)
+            .categoryId(1L)
+            .name("Bob Zip")
+            .address("Seoul")
+            .build();
 
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
 
