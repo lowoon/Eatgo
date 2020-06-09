@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +22,11 @@ import kr.co.fastcampus.eatgo.domain.Restaurant;
 @RestController
 public class RestaurantController {
 
-    @Autowired
-    private RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
+
+    public RestaurantController(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
+    }
 
     @GetMapping("/restaurants")
     public List<Restaurant> list() {
@@ -38,12 +40,13 @@ public class RestaurantController {
 
     @PostMapping("/restaurants")
     public ResponseEntity<?> create(@Valid @RequestBody Restaurant resource)
-            throws URISyntaxException {
+        throws URISyntaxException {
         Restaurant restaurant = restaurantService.addRestaurant(
-                Restaurant.builder()
-                        .name(resource.getName())
-                        .address(resource.getAddress())
-                        .build());
+            Restaurant.builder()
+                .categoryId(resource.getCategoryId())
+                .name(resource.getName())
+                .address(resource.getAddress())
+                .build());
 
         URI location = new URI("/restaurants/" + restaurant.getId());
         return ResponseEntity.created(location).body("{}");
@@ -51,7 +54,7 @@ public class RestaurantController {
 
     @PatchMapping("/restaurants/{id}")
     public String update(@PathVariable("id") Long id,
-            @Valid @RequestBody Restaurant resource) {
+        @Valid @RequestBody Restaurant resource) {
         String name = resource.getName();
         String address = resource.getAddress();
         restaurantService.updateRestaurant(id, name, address);

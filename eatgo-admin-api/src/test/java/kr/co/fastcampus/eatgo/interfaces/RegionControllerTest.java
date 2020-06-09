@@ -66,7 +66,7 @@ class RegionControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(content)
         )
-            .andExpect(status().isCreated())
-            .andDo(print());
+            .andDo(print())
+            .andExpect(status().isCreated());
     }
 }
