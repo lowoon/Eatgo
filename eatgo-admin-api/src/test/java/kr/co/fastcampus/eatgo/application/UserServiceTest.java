@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ class UserServiceTest {
             .level(1L)
             .build());
 
-        given(userRepository.findAll()).willReturn(mockUsers);
+        when(userRepository.findAll()).thenReturn(mockUsers);
 
         assertThat(userService.getUsers().get(0).getName()).isEqualTo("테스터");
     }
@@ -48,7 +48,7 @@ class UserServiceTest {
         String name = "Administrator";
         String email = "admin@example.com";
 
-        given(userRepository.save(any())).willReturn(User.builder()
+        when(userRepository.save(any())).thenReturn(User.builder()
             .id(1L)
             .name(name)
             .email(email)
@@ -67,7 +67,7 @@ class UserServiceTest {
         String email = "admin@example.com";
         Long level = 3L;
 
-        given(userRepository.save(any())).willReturn(User.builder()
+        when(userRepository.save(any())).thenReturn(User.builder()
             .id(id)
             .name(name)
             .email(email)
@@ -81,7 +81,7 @@ class UserServiceTest {
 
     @Test
     void deactivateUser() {
-        given(userRepository.findById(anyLong())).willReturn(Optional.of(User.builder().build()));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(User.builder().build()));
 
         userService.deactivateUser(1004L);
 

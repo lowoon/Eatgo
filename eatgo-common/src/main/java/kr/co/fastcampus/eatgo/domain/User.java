@@ -32,6 +32,12 @@ public class User {
     @NotNull
     private Long level;
 
+    private String pasword;
+
+    public static User OfCustomer(String name, String email, String password) {
+        return new User(null, name, email, 1L, password);
+    }
+
     public void update(Long id, String name, String email, Long level) {
         this.id = id;
         this.name = name;

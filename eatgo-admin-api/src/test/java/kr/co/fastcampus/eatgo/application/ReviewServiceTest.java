@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ class ReviewServiceTest {
                 .description("JMT")
                 .build());
 
-        given(reviewRepository.findAll()).willReturn(mockReviews);
+        when(reviewRepository.findAll()).thenReturn(mockReviews);
         Review review = mockReviews.get(0);
 
         assertThat(review.getDescription()).isEqualTo("JMT");

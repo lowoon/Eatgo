@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,7 +38,7 @@ public class ReviewControllerTest {
                 .description("JMT")
                 .build());
 
-        given(reviewService.getReviews(1004L)).willReturn(mockReviews);
+        when(reviewService.getReviews(1004L)).thenReturn(mockReviews);
 
         mvc.perform(get("/restaurants/1004/reviews"))
                 .andExpect(status().isOk())

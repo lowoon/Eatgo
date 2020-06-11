@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ class RegionServiceTest {
         List<Region> mockRegions = new ArrayList<>();
         mockRegions.add(Region.builder().name("Seoul").build());
 
-        given(regionRepository.findAll()).willReturn(mockRegions);
+        when(regionRepository.findAll()).thenReturn(mockRegions);
 
         List<Region> regions = regionService.getRegions();
 

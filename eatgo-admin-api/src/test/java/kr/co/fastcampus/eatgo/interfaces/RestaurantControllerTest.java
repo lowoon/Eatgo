@@ -23,7 +23,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
-import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
+import kr.co.fastcampus.eatgo.exception.RestaurantNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(RestaurantController.class)
@@ -51,7 +51,7 @@ class RestaurantControllerTest {
             .address("Seoul")
             .build());
 
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
+        when(restaurantService.getRestaurants()).thenReturn(restaurants);
 
         mvc.perform(get("/restaurants"))
             .andExpect(status().isOk())
@@ -68,7 +68,7 @@ class RestaurantControllerTest {
             .address("Seoul")
             .build();
 
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
+        when(restaurantService.getRestaurant(1004L)).thenReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
             .andExpect(status().isOk())
@@ -79,8 +79,8 @@ class RestaurantControllerTest {
 
     @Test
     public void detailWithNotExisted() throws Exception {
-        given(restaurantService.getRestaurant(1234L))
-            .willThrow(new RestaurantNotFoundException(1234L));
+        when(restaurantService.getRestaurant(1234L))
+            .thenThrow(new RestaurantNotFoundException(1234L));
 
         mvc.perform(get("/restaurants/1234"))
             .andExpect(status().isNotFound())
@@ -89,7 +89,7 @@ class RestaurantControllerTest {
 
     @Test
     public void createWithValidData() throws Exception {
-        given(restaurantService.addRestaurant(any())).will(invocation -> {
+        when(restaurantService.addRestaurant(any())).then(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
             return Restaurant.builder()
                 .id(1234L)

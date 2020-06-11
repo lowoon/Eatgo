@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import static org.hamcrest.core.StringContains.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
-import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
+import kr.co.fastcampus.eatgo.exception.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.domain.Review;
 
 @WebMvcTest(RestaurantController.class)
@@ -40,7 +40,7 @@ class RestaurantControllerTest {
             .address("Seoul")
             .build());
 
-        given(restaurantService.getRestaurants("Seoul", 1L)).willReturn(restaurants);
+        when(restaurantService.getRestaurants("Seoul", 1L)).thenReturn(restaurants);
 
         mvc.perform(get("/restaurants?region=Seoul&category=1"))
             .andExpect(status().isOk())
@@ -69,7 +69,7 @@ class RestaurantControllerTest {
         restaurant.setMenuItems(Collections.singletonList(menuItem));
         restaurant.setReviews(Collections.singletonList(review));
 
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
+        when(restaurantService.getRestaurant(1004L)).thenReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
             .andExpect(status().isOk())
@@ -83,8 +83,8 @@ class RestaurantControllerTest {
 
     @Test
     public void detailWithNotExisted() throws Exception {
-        given(restaurantService.getRestaurant(1234L))
-            .willThrow(new RestaurantNotFoundException(1234L));
+        when(restaurantService.getRestaurant(1234L))
+            .thenThrow(new RestaurantNotFoundException(1234L));
 
         mvc.perform(get("/restaurants/1234"))
             .andExpect(status().isNotFound())

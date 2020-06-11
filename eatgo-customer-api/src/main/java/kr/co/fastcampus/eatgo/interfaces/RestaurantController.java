@@ -16,8 +16,12 @@ import kr.co.fastcampus.eatgo.domain.Restaurant;
 @RestController
 public class RestaurantController {
 
-    @Autowired
-    private RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
+
+    public RestaurantController(
+        RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
+    }
 
     @GetMapping("/restaurants")
     public List<Restaurant> list(@RequestParam("region") String region,

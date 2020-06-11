@@ -49,7 +49,7 @@ class UserControllerTest {
             .level(1L)
             .build());
 
-        given(userService.getUsers()).willReturn(mockUsers);
+        when(userService.getUsers()).thenReturn(mockUsers);
 
         mvc.perform(get("/users"))
             .andExpect(status().isOk())
@@ -63,7 +63,7 @@ class UserControllerTest {
         String email = "admin@example.com";
         String name = "Administrator";
 
-        given(userService.addUser(name, email)).willReturn(User.builder()
+        when(userService.addUser(name, email)).thenReturn(User.builder()
             .id(1L)
             .name(name)
             .email(email)

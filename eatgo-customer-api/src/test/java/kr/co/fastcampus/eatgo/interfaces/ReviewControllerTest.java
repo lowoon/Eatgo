@@ -1,6 +1,6 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,7 +28,7 @@ public class ReviewControllerTest {
 
     @Test
     public void createWithValidAttributes() throws Exception {
-        given(reviewService.addReview(eq(1L), any())).willReturn(
+        when(reviewService.addReview(eq(1L), any())).thenReturn(
                 Review.builder()
                         .id(123L)
                         .build()

@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import static org.hamcrest.core.StringContains.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,7 +40,7 @@ class CategoryControllerTest {
         List<Category> mockCategories = new ArrayList<>();
         mockCategories.add(Category.builder().name("Korean Food").build());
 
-        given(categoryService.getCategories()).willReturn(mockCategories);
+        when(categoryService.getCategories()).thenReturn(mockCategories);
 
         mvc.perform(get("/categories"))
             .andExpect(status().isOk())

@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import kr.co.fastcampus.eatgo.domain.Restaurant;
-import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
+import kr.co.fastcampus.eatgo.exception.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 
 class RestaurantServiceTest {
@@ -42,8 +42,8 @@ class RestaurantServiceTest {
             .build();
         restaurants.add(restaurant);
 
-        given(restaurantRepository.findAll()).willReturn(restaurants);
-        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
+        when(restaurantRepository.findAll()).thenReturn(restaurants);
+        when(restaurantRepository.findById(1004L)).thenReturn(Optional.of(restaurant));
     }
 
     @Test
@@ -70,7 +70,7 @@ class RestaurantServiceTest {
 
     @Test
     void addRestaurant() {
-        given(restaurantRepository.save(any())).will(invocation -> {
+        when(restaurantRepository.save(any())).then(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
             restaurant.setId(1234L);
             return restaurant;
@@ -95,7 +95,7 @@ class RestaurantServiceTest {
             .address("Seoul")
             .build();
 
-        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
+        when(restaurantRepository.findById(1004L)).thenReturn(Optional.of(restaurant));
 
         restaurantService.updateRestaurant(1004L, "Sool Zip", "Sokcho");
 

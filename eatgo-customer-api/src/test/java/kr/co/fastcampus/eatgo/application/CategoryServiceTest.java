@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ class CategoryServiceTest {
         List<Category> mockCategories =  new ArrayList<>();
         mockCategories.add(Category.builder().name("Korean Food").build());
 
-        given(categoryService.getCategories()).willReturn(mockCategories);
+        when(categoryService.getCategories()).thenReturn(mockCategories);
 
         Category category = categoryService.getCategories().get(0);
         assertThat(category.getName()).isEqualTo("Korean Food");

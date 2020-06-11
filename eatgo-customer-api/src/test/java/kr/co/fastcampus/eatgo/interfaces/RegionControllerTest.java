@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import static org.hamcrest.core.StringContains.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -44,7 +44,7 @@ class RegionControllerTest {
         List<Region> regions = new ArrayList<>();
         regions.add(Region.builder().name("Seoul").build());
 
-        given(regionService.getRegions()).willReturn(regions);
+        when(regionService.getRegions()).thenReturn(regions);
 
         mvc.perform(get("/regions")
             .contentType(MediaType.APPLICATION_JSON)

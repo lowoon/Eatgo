@@ -1,7 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,7 +38,7 @@ class MenuItemControllerTest {
                 .name("Kimchi")
                 .build());
 
-        given(menuItemService.getMenuItems(1004L)).willReturn(mockMenuItems);
+        when(menuItemService.getMenuItems(1004L)).thenReturn(mockMenuItems);
 
         List<MenuItem> menuItems = menuItemService.getMenuItems(1004L);
 
