@@ -1,4 +1,4 @@
-package kr.co.fastcampus.eatgo.dto;
+package kr.co.fastcampus.eatgo.interfaces.dto;
 
 public class DefaultResponseDto<T> {
     private Integer code;

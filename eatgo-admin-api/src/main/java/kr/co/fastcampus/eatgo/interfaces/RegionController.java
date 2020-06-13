@@ -16,7 +16,7 @@ import kr.co.fastcampus.eatgo.domain.Region;
 @RestController
 public class RegionController {
 
-    private RegionService regionService;
+    private final RegionService regionService;
 
     public RegionController(RegionService regionService) {
         this.regionService = regionService;
@@ -29,7 +29,7 @@ public class RegionController {
     }
 
     @PostMapping("/regions")
-    public ResponseEntity<?> create(@RequestBody Region resource) throws URISyntaxException {
+    public ResponseEntity<Void> create(@RequestBody Region resource) throws URISyntaxException {
         Region region = regionService.addRegion(Region.builder()
             .name(resource.getName())
             .build());

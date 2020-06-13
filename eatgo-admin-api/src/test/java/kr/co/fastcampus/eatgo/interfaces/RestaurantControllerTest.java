@@ -105,8 +105,7 @@ class RestaurantControllerTest {
         )
             .andDo(print())
             .andExpect(status().isCreated())
-            .andExpect(header().string("location", "/restaurants/1234"))
-            .andExpect(content().string("{}"));
+            .andExpect(header().string("location", "/restaurants/1234"));
 
         verify(restaurantService).addRestaurant(any());
     }

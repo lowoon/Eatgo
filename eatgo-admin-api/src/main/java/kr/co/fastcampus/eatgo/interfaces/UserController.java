@@ -31,10 +31,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> create(@RequestBody User resource) throws URISyntaxException {
+    public ResponseEntity<Void> create(@RequestBody User resource) throws URISyntaxException {
         User persisted = userService.addUser(resource.getName(), resource.getEmail());
         URI location = new URI("/users/" + persisted.getId());
-        return ResponseEntity.created(location).body("{}");
+        return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/users/{userId}")

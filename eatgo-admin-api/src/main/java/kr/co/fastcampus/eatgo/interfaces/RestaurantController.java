@@ -39,7 +39,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity<?> create(@Valid @RequestBody Restaurant resource)
+    public ResponseEntity<Void> create(@Valid @RequestBody Restaurant resource)
         throws URISyntaxException {
         Restaurant restaurant = restaurantService.addRestaurant(
             Restaurant.builder()
@@ -49,7 +49,7 @@ public class RestaurantController {
                 .build());
 
         URI location = new URI("/restaurants/" + restaurant.getId());
-        return ResponseEntity.created(location).body("{}");
+        return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/restaurants/{id}")

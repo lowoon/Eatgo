@@ -16,7 +16,7 @@ import kr.co.fastcampus.eatgo.domain.Category;
 @RestController
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<?> create(@RequestBody Category resource) throws URISyntaxException {
+    public ResponseEntity<Void> create(@RequestBody Category resource) throws URISyntaxException {
         Category category = categoryService.addCategory(Category.builder()
             .name(resource.getName())
             .build());

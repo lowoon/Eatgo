@@ -30,7 +30,7 @@ class MenuItemControllerTest {
         mvc.perform(patch("/restaurants/1/menuItems")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("[]"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(menuItemService).bulkUpdate(eq(1L), any());
     }

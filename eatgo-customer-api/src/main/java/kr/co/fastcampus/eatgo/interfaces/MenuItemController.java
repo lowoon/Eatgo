@@ -2,6 +2,7 @@ package kr.co.fastcampus.eatgo.interfaces;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,9 +30,9 @@ public class MenuItemController {
     }
 
     @PatchMapping("/restaurants/{restaurantId}/menuItems")
-    public String bulkUpdate(@PathVariable("restaurantId") Long restaurantId,
+    public ResponseEntity<Void> bulkUpdate(@PathVariable("restaurantId") Long restaurantId,
             @RequestBody List<MenuItem> menuItems) {
         menuItemService.bulkUpdate(restaurantId, menuItems);
-        return "{}";
+        return ResponseEntity.noContent().build();
     }
 }
