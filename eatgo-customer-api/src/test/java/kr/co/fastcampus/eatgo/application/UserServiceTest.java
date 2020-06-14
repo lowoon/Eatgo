@@ -65,8 +65,8 @@ class UserServiceTest {
     @Test
     void authenticate() {
         String email = "tester@example.com";
-        String password = "test";
         String name = "tester";
+        String password = "test";
 
         User user = User.builder()
             .name(name)
@@ -77,6 +77,7 @@ class UserServiceTest {
             .build();
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(password, password)).thenReturn(true);
 
         assertThat(userService.authenticate(email, password).getId()).isEqualTo(user.getId());
     }

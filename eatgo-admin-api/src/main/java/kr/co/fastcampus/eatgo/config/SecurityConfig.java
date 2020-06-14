@@ -1,4 +1,4 @@
-package kr.co.fastcampus.eatgo;
+package kr.co.fastcampus.eatgo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,10 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .cors().disable()
+    protected void configure(HttpSecurity http) throws Exception {
+        http
             .csrf().disable()
+            .cors().disable()
             .formLogin().disable()
             .headers().frameOptions().disable();
     }

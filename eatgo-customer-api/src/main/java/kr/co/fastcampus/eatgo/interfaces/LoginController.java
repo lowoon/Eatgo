@@ -6,20 +6,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.fastcampus.eatgo.application.UserService;
+import kr.co.fastcampus.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.interfaces.dto.LoginRequestDto;
+import kr.co.fastcampus.eatgo.util.JwtProvider;
 
 @RestController
-public class SessionController {
+public class LoginController {
 
     private final UserService userService;
+    private final JwtProvider jwtProvider;
 
-    public SessionController(UserService userService) {
+    public LoginController(UserService userService, JwtProvider jwtProvider) {
         this.userService = userService;
+        this.jwtProvider = jwtProvider;
     }
 
-    @PostMapping("/session")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
-        userService.authenticate(loginRequestDto.getEmail(), loginRequestDto.getPassword());
-        return ResponseEntity.ok().header("token", "aaa").build();
+        User user = userService.authenticate(loginRequestDto.getEmail(),
+            loginRequestDto.getPassword());
+        String token = jwtProvider.createToken(user.getId(), user.getName());
+        return ResponseEntity.ok("{\"accessToken\":\"" + token + "\"}");
     }
 }

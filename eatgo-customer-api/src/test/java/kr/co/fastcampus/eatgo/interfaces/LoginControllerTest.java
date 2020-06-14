@@ -16,21 +16,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.fastcampus.eatgo.application.UserService;
+import kr.co.fastcampus.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.interfaces.exception.NotExistedEmailException;
 import kr.co.fastcampus.eatgo.interfaces.exception.WrongPasswordException;
+import kr.co.fastcampus.eatgo.util.JwtProvider;
 
-@WebMvcTest(controllers = SessionController.class)
-class SessionControllerTest {
+@WebMvcTest(LoginController.class)
+class LoginControllerTest {
 
     private MockMvc mvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private UserService userService;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext) {
@@ -41,20 +42,30 @@ class SessionControllerTest {
 
     @Test
     void login() throws Exception {
+        Long id = 1004L;
+        String name = "tester";
         String email = "tester@exmple.com";
         String password = "test";
         String body = "{\"email\":\"" + email + "\", \"password\":\"" + password + "\"}";
 
+        User user = User.builder()
+            .id(id)
+            .name(name)
+            .email(email)
+            .pasword(password)
+            .level(1L)
+            .build();
 
-        mvc.perform(post("/session")
+        when(userService.authenticate(email, password)).thenReturn(user);
+
+        mvc.perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(body)
         )
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string("token", "aaa"));
-
-        verify(userService).authenticate(email, password);
+            .andExpect(content().string(
+                "{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsInVzZXJOYW1lIjoidGVzdGVyIn0.bUqxLMPHoRhKqHFqOJp9BkbLn7Ym48k2b2XL2tPUSKU\"}"));
     }
 
     @Test
@@ -65,7 +76,7 @@ class SessionControllerTest {
 
         when(userService.authenticate(email, password)).thenThrow(WrongPasswordException.class);
 
-        mvc.perform(post("/session")
+        mvc.perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(body)
         )
@@ -83,7 +94,7 @@ class SessionControllerTest {
 
         when(userService.authenticate(email, password)).thenThrow(NotExistedEmailException.class);
 
-        mvc.perform(post("/session")
+        mvc.perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(body)
         )

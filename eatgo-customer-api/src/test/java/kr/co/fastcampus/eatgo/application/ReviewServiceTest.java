@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import kr.co.fastcampus.eatgo.domain.Review;
 import kr.co.fastcampus.eatgo.domain.ReviewRepository;
 
 class ReviewServiceTest {
@@ -26,13 +25,11 @@ class ReviewServiceTest {
 
     @Test
     void addReview() {
-        Review review = Review.builder()
-                .name("Joker")
-                .score(3)
-                .description("JMT")
-                .build();
+        String name = "Joker";
+        int score = 3;
+        String description = "JMT";
 
-        reviewService.addReview(1004L, review);
+        reviewService.addReview(1004L, name, score, description);
 
         verify(reviewRepository).save(any());
     }
